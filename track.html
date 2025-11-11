@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lisa Artistry Spa – Booking & Tracking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+  body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial; background: #f6f9fc; color: #013a63; padding: 24px; }
+  .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  h2 { text-align: center; color: #d3177b; margin-bottom: 20px; }
+  label { display: block; margin-top: 12px; font-weight: 600; }
+  input, select, button { width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #cfd8dc; font-size: 0.95rem; }
+  button { background: #d3177b; color: white; cursor: pointer; margin-top: 12px; }
+  button:hover { opacity: 0.9; }
+  .cart-summary { margin-top: 20px; background: #f1f5f9; padding: 15px; border-radius: 12px; }
+  .cart-summary h3 { margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { padding: 10px; border-bottom: 1px solid #cfd8dc; text-align: left; }
+  th { background: #d3177b; color: white; }
+  .remove-btn { background: #ff4b5c; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+  #total { font-weight: bold; margin-top: 10px; text-align: right; font-size: 1.1rem; }
+  #statusMessage { margin-top: 12px; font-weight: 600; text-align: center; }
+  .hidden { display:none; }
+  .booking-status { background: #e6f9e8; border-radius: 10px; padding: 15px; margin-top: 15px; }
+</style>
+</head>
+<body>
+  <!-- Booking Tracking -->
+  <div style="margin-top:20px; padding:15px; border:2px solid #d3177b; border-radius:8px; background-color: #f5eef1;">
+    <h3>Check Booking Status</h3>
+    <label>Email
+      <input type="email" id="checkEmail" placeholder="Enter your email" />
+    </label>
+    <label>Booking Reference (optional)
+      <input type="text" id="checkRef" placeholder="LISASPA-..." />
+    </label>
+    <button id="checkBtn">Check Status</button>
+    <div id="checkResults"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://js.paystack.co/v2/inline.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, addDoc, doc, setDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCx3I1FRYpOPi2ponH88fapPZFK0TUX3xk",
+  authDomain: "lisaartistryspa-761ac.firebaseapp.com",
+  projectId: "lisaartistryspa-761ac",
+  storageBucket: "lisaartistryspa-761ac.firebasestorage.app",
+  messagingSenderId: "974775812115",
+  appId: "1:974775812115:web:ba03bce66cf7eb147f3fe6"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const modeSelect = document.getElementById('serviceMode');
+const addressField = document.getElementById('addressField');
+const serviceTypeSelect = document.getElementById('serviceType');
+const serviceSelect = document.getElementById('serviceSelect');
+const addServiceBtn = document.getElementById('addServiceBtn');
+const cartTable = document.querySelector('#cartTable tbody');
+const totalEl = document.getElementById('total');
+const payBtn = document.getElementById('payBtn');
+const statusMessage = document.getElementById('statusMessage');
+const dateInput = document.getElementById('date');
+const timeSelect = document.getElementById('timeSelect');
+const checkBtn = document.getElementById('checkBtn');
+const checkEmail = document.getElementById('checkEmail');
+const checkRef = document.getElementById('checkRef');
+const checkResults = document.getElementById('checkResults');
+
+let cart = [];
+
+// Show/hide address
+modeSelect.addEventListener('change', () => {
+  addressField.classList.toggle('hidden', modeSelect.value !== 'homeService');
+  serviceSelect.innerHTML = '<option value="">---Select---</option>';
+  serviceSelect.disabled = true;
+  addServiceBtn.disabled = true;
+});
+
+// Load services dynamically from Firestore
+serviceTypeSelect.addEventListener('change', async () => {
+  const type = serviceTypeSelect.value;
+  const mode = modeSelect.value;
+  if(!type || !mode){ serviceSelect.disabled = true; addServiceBtn.disabled = true; return; }
+  serviceSelect.innerHTML = '<option>Loading...</option>';
+  const qSnap = query(collection(db, "services"), where("type","==", type), where("mode","==", mode));
+  const snap = await getDocs(qSnap);
+  if(snap.empty){
+    serviceSelect.innerHTML = '<option value="">No services found</option>';
+    serviceSelect.disabled = true; addServiceBtn.disabled = true;
+    return;
+  }
+  serviceSelect.innerHTML = '<option value="">---Select---</option>';
+  snap.forEach(doc => {
+    const s = doc.data();
+    const option = document.createElement('option');
+    option.value = s.name;
+    option.dataset.amount = s.amount;
+    option.textContent = `${s.name} — ₦${(s.amount/100).toLocaleString()}`;
+    serviceSelect.appendChild(option);
+  });
+  serviceSelect.disabled = false;
+  addServiceBtn.disabled = false;
+});
+
+// Add service to cart
+addServiceBtn.addEventListener('click', () => {
+  const selected = serviceSelect.selectedOptions[0];
+  if(!selected || !selected.value) return;
+  cart.push({name:selected.value, amount:Number(selected.dataset.amount)});
+  updateCart();
+});
+
+cartTable.addEventListener('click', e => {
+  if(e.target.classList.contains('remove-btn')){
+    cart.splice(e.target.dataset.index,1);
+    updateCart();
+  }
+});
+
+function updateCart(){
+  cartTable.innerHTML='';
+  let total=0;
+  cart.forEach((item,idx)=>{
+    total+=item.amount;
+    const tr = document.createElement('tr');
+    tr.innerHTML=`<td>${item.name}</td><td>₦${(item.amount/100).toLocaleString()}</td><td><button class="remove-btn" data-index="${idx}">Remove</button></td>`;
+    cartTable.appendChild(tr);
+  });
+  totalEl.textContent=`Total: ₦${(total/100).toLocaleString()}`;
+}
+
+// Flatpickr & time slots
+flatpickr("#date", {dateFormat:"Y-m-d", minDate:"today", onChange:populateAvailableTimes});
+function generateTimeSlots(){
+  const slots=[]; let start=new Date(); start.setHours(8,0,0,0);
+  const end=new Date(); end.setHours(20,0,0,0);
+  while(start<=end){
+    slots.push(`${start.getHours().toString().padStart(2,'0')}:${start.getMinutes().toString().padStart(2,'0')}`);
+    start.setMinutes(start.getMinutes()+15);
+  }
+  return slots;
+}
+async function populateAvailableTimes(){
+  const date=dateInput.value;
+  if(!date) return;
+  const snapshot=await getDocs(collection(db,'bookings'));
+  const unavailableTimes=snapshot.docs.filter(d=>d.data().date===date).map(d=>new Date(`${d.data().date}T${d.data().time}`));
+  timeSelect.innerHTML='<option value="">Select time</option>';
+  generateTimeSlots().forEach(slot=>{
+    const slotTime=new Date(`${date}T${slot}`);
+    const conflict=unavailableTimes.some(b=>Math.abs((slotTime-b)/60000)<120);
+    if(!conflict){ const opt=document.createElement('option'); opt.value=slot; opt.textContent=slot; timeSelect.appendChild(opt);}
+  });
+}
+
+// Paystack & booking
+payBtn.addEventListener('click',async ()=>{
+  const name=document.getElementById('customerName').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const mode=modeSelect.value;
+  const address=document.getElementById('address').value.trim();
+  const date=dateInput.value;
+  const time=timeSelect.value;
+  if(!name || !email || !phone || !mode || !date || !time || cart.length===0){ statusMessage.textContent='Please fill all fields and add at least one service.'; return;}
+  const totalAmount=cart.reduce((sum,item)=>sum+item.amount,0);
+  const payRef=`LISASPA-${Date.now()}-${Math.floor(Math.random()*1000000)}`;
+
+  const handler=PaystackPop.setup({
+    key:'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5',
+    email, amount:totalAmount, currency:'NGN', ref:payRef,
+    callback: async function(){
+      for(let item of cart){
+        await addDoc(collection(db,'bookings'),{
+          customerName:name, email, phone, mode, address,
+          service:item.name, amountKobo:item.amount,
+          date, time, status:'paid', createdAt:serverTimestamp(), paystackReference:payRef
+        });
+      }
+      statusMessage.textContent='Payment successful! Booking confirmed.';
+      cart=[]; updateCart();
+      document.getElementById('customerName').value=''; document.getElementById('email').value=''; document.getElementById('phone').value='';
+      modeSelect.value=''; addressField.classList.add('hidden'); serviceTypeSelect.value=''; serviceSelect.innerHTML='<option value="">---Select---</option>'; timeSelect.innerHTML='<option value="">---Select Time---</option>';
+    },
+    onClose: function(){ alert('Payment window closed.'); }
+  });
+  handler.openIframe();
+});
+
+// Booking tracking
+checkBtn.addEventListener('click',()=>{
+  const emailVal=checkEmail.value.trim();
+  const refVal=checkRef.value.trim();
+  if(!emailVal && !refVal){ checkResults.innerHTML='<p style="color:red;">Enter email or reference</p>'; return;}
+  checkResults.innerHTML='Loading...';
+  let q;
+  if(refVal) q=query(collection(db,'bookings'),where('paystackReference','==',refVal));
+  else q=query(collection(db,'bookings'),where('email','==',emailVal));
+  onSnapshot(q,snap=>{
+    checkResults.innerHTML='';
+    if(snap.empty){ checkResults.innerHTML='<p>No booking found.</p>'; return;}
+    snap.docs.forEach(doc=>{
+      const b=doc.data();
+      const div=document.createElement('div'); div.className='booking-status';
+      div.innerHTML=`<p><strong>Booking ID:</strong> ${b.paystackReference}</p>
+        <p><strong>Name:</strong> ${b.customerName}</p>
+        <p><strong>Mode:</strong> ${b.mode==='homeService'?'Home Service':'In Spa'}</p>
+        ${b.address?`<p><strong>Address:</strong> ${b.address}</p>`:''}
+        <p><strong>Service:</strong> ${b.service}</p>
+        <p><strong>Date:</strong> ${b.date}</p>
+        <p><strong>Time:</strong> ${b.time}</p>
+        <p><strong>Status:</strong> ${b.status}</p>`;
+      checkResults.appendChild(div);
+    });
+  });
+});
+</script>
+</body>
+</html>

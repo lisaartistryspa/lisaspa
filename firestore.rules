@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // bookings collection
+    match /bookings/{bookingId} {
+      allow create: if request.auth == null || request.auth.uid != null
+        && request.resource.data.status == 'pending'
+        && request.resource.data.customerName is string
+        && request.resource.data.phone is string
+        && request.resource.data.paystackReference is string;
+
+      // Only allow updates from trusted server (functions) — functions use Admin SDK and bypass rules.
+      // For convenience, allow updates if request.auth.token.admin == true (if you set up custom claims for admin users).
+      allow update: if request.auth != null && request.auth.token.admin == true;
+
+      // Read by authenticated users (or open to everyone if you prefer)
+      allow read: if true;
+    }
+
+    // Add a payments_pending collection for reconciliation logs
+    match /payments_pending/{docId} {
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
