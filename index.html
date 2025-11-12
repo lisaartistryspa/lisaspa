@@ -9,7 +9,10 @@
     <meta name="keywords" content="">
     <meta name="author" content="Awaiken Theme">
 	<!-- Page Title -->
-	<title>Beauty & Spa HTML5 Bootstrap Free Template</title>
+	<title>Lisa Artistry Spa | Home</title>
+	<link rel="icon" href="images/lisa.png" sizes="any">
+	<link rel="icon" type="image/svg+xml" href="images/lisa.png">
+	<link rel="apple-touch-icon" href="images/lisa.png">
 	<!-- Google Fonts css-->
 	<link href="https://fonts.googleapis.com/css?family=Merienda+One%7cMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
 	<!-- Bootstrap css -->
@@ -114,6 +117,29 @@
 			color: #fff !important;
 		}
 
+		.don {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			object-fit: cover;
+			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+			animation: pulse 2s infinite;
+		}
+
+		@keyframes pulse {
+			0% {
+			transform: scale(1);
+			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+			}
+			70% {
+			transform: scale(1.05);
+			box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+			}
+			100% {
+			transform: scale(1);
+			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+			}
+		}
 
 	</style>
 	
@@ -129,7 +155,9 @@
 	<div class="preloader">
 		<div class="browser-screen-loading-content">
 			<div class="loading-dots dark-gray">
-				<img src="images/lisawhite.png" alt="Preloader" width="150px" height="150px"/>
+				
+				<img class="don" src="images/lisawhite.png" alt="Preloader" width="150px" height="150px"/>
+				
 			</div>
 		</div>
     </div>
