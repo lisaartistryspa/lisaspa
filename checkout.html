@@ -607,154 +607,129 @@ payBtn.addEventListener('click', async () => {
   }
   const payRef = `LISASPA-${Date.now()}-${Math.floor(Math.random()*1000000)}`;
 
-  const handler = PaystackPop.setup({
+  const paystack = new PaystackPop();
+
+paystack.newTransaction({
     key: 'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5',
     email: email,
     amount: Number(payBtn.dataset.amount),
     ref: payRef,
     currency: 'NGN',
-    callback: async function(response) {
-      try {
-        await addDoc(collection(db,'bookings'),{
-          customerName: name,
-          email,
-          phone,
-          mode,
-          address: mode === 'homeService' ? address : '',
-          services: cart,
-          date,
-          time,
-          amount: Number(payBtn.dataset.amount),
-          voucher: voucher ? voucher.code : '',
-          ref: payRef,
-          timestamp: serverTimestamp()
-        });
-
-        // Generate POS-style PDF Invoice
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ unit: 'mm', format: [80, 150] }); // initial page size
-
-        let lineHeight = 6;
-        let y = 10;
-
-        const img = new Image();
-        img.src = "images/lisa.png";
-        img.onload = () => {
-
-            // Wrap text helper
-            const wrapText = (text, maxWidth) => doc.splitTextToSize(text, maxWidth);
-
-            // Base height for logo + header
-            let baseHeight = 150;
-
-            // Dynamic height for services
-            let serviceHeight = cart.reduce((acc, s) => {
-                const lines = wrapText(s.name, 50);
-                return acc + lines.length * lineHeight;
-            }, 0);
-
-            // Dynamic height for voucher
-            let voucherHeight = voucher ? lineHeight : 0;
-
-            // Dynamic height for payment reference
-            const payRefLines = wrapText(`Payment Ref: ${payRef}`, 60);
-            let paymentRefHeight = payRefLines.length * lineHeight;
-
-            // Dynamic height for long address (home service)
-            let addressHeight = 0;
-            if(mode === 'homeService' && address) {
-                const addrLines = wrapText(`Address: ${address}`, 60);
-                addressHeight = addrLines.length * lineHeight;
-            }
-
-            // Footer height
-            let footerHeight = lineHeight * 2;
-
-            // Total page height
-            let totalHeight = baseHeight + serviceHeight + voucherHeight + paymentRefHeight + addressHeight + footerHeight;
-
-            // Resize PDF dynamically
-            doc.internal.pageSize.setWidth(80);
-            doc.internal.pageSize.setHeight(totalHeight);
-
-            // Logo
-            doc.addImage(img, 'PNG', 20, y, 40, 20);
-            y += 25;
-
-            // Header
-            doc.setFontSize(14); doc.setFont(undefined, 'bold');
-            doc.text("Lisa Artistry Spa", 40, y, { align: "center" }); y += lineHeight;
-            doc.setFontSize(10); doc.setFont(undefined, 'normal');
-            doc.text("Booking Invoice", 40, y, { align: "center" }); y += lineHeight*2;
-
-            // Customer Info
-            const info = [
-                `Name: ${name}`,
-                `Email: ${email}`,
-                `Phone: ${phone}`,
-                `Mode: ${mode}`,
-            ];
-            if(mode === 'homeService' && address) {
-                const addrLines = wrapText(`Address: ${address}`, 60);
-                addrLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-            }
-            info.push(`Date: ${date}`, `Time: ${time}`);
-            info.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-
-            // Services
-            doc.text("----------------------------------------", 10, y); y += lineHeight;
-            doc.setFont(undefined, 'bold'); doc.text("Service", 10, y); doc.text("Price(₦)", 65, y, { align: "right" }); y += lineHeight;
-            doc.setFont(undefined, 'normal');
-
-            cart.forEach(s => {
-                const lines = wrapText(s.name, 50);
-                const amount = (s.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 });
-                lines.forEach((line, idx) => {
-                    doc.text(line, 10, y);
-                    if(idx === 0) doc.text(amount, 65, y, { align: "right" });
-                    y += lineHeight;
-                });
+    onSuccess: async (response) => {
+        try {
+            await addDoc(collection(db,'bookings'),{
+                customerName: name,
+                email,
+                phone,
+                mode,
+                address: mode === 'homeService' ? address : '',
+                services: cart,
+                date,
+                time,
+                amount: Number(payBtn.dataset.amount),
+                voucher: voucher ? voucher.code : '',
+                ref: payRef,
+                timestamp: serverTimestamp()
             });
 
-            doc.text("----------------------------------------", 10, y); y += lineHeight;
+            // Generate PDF invoice (same as your previous code)
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'mm', format: [80, 150] });
+            let lineHeight = 6;
+            let y = 10;
 
-            // Voucher
-            if(voucher){
-                const voucherLines = wrapText(`Voucher: ${voucher.code}`, 60);
-                voucherLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-            }
+            const img = new Image();
+            img.src = "images/lisa.png";
+            img.onload = () => {
+                const wrapText = (text, maxWidth) => doc.splitTextToSize(text, maxWidth);
+                let baseHeight = 150;
+                let serviceHeight = cart.reduce((acc, s) => {
+                    const lines = wrapText(s.name, 50);
+                    return acc + lines.length * lineHeight;
+                }, 0);
+                let voucherHeight = voucher ? lineHeight : 0;
+                const payRefLines = wrapText(`Payment Ref: ${payRef}`, 60);
+                let paymentRefHeight = payRefLines.length * lineHeight;
+                let addressHeight = 0;
+                if(mode === 'homeService' && address){
+                    const addrLines = wrapText(`Address: ${address}`, 60);
+                    addressHeight = addrLines.length * lineHeight;
+                }
+                let footerHeight = lineHeight * 2;
+                let totalHeight = baseHeight + serviceHeight + voucherHeight + paymentRefHeight + addressHeight + footerHeight;
 
-            // Total Paid
-            doc.setFont(undefined,'bold');
-            doc.text("Total Paid:", 10, y);
-            doc.text((payBtn.dataset.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }), 65, y, { align: "right" });
-            y += lineHeight*2;
+                doc.internal.pageSize.setWidth(80);
+                doc.internal.pageSize.setHeight(totalHeight);
 
-            // Payment Reference
-            doc.setFont(undefined,'normal');
-            payRefLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
+                // Logo
+                doc.addImage(img, 'PNG', 20, y, 40, 20);
+                y += 25;
 
-            // Footer
-            doc.text("Thank you for your booking!", 40, y, { align: "center" });
+                // Header
+                doc.setFontSize(14); doc.setFont(undefined, 'bold');
+                doc.text("Lisa Artistry Spa", 40, y, { align: "center" }); y += lineHeight;
+                doc.setFontSize(10); doc.setFont(undefined, 'normal');
+                doc.text("Booking Invoice", 40, y, { align: "center" }); y += lineHeight*2;
 
-            // Save PDF
-            doc.save(`Invoice-${payRef}.pdf`);
+                // Customer Info
+                const info = [`Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`, `Mode: ${mode}`];
+                if(mode === 'homeService' && address){
+                    const addrLines = wrapText(`Address: ${address}`, 60);
+                    addrLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
+                }
+                info.push(`Date: ${date}`, `Time: ${time}`);
+                info.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
 
-            statusMessage.style.color='green';
-            statusMessage.textContent='Booking confirmed! Invoice downloaded. Payment reference: '+payRef;
-            cart=[];
-            updateCart();
-            populateAvailableTimes();
-        };
+                // Services
+                doc.text("----------------------------------------", 10, y); y += lineHeight;
+                doc.setFont(undefined, 'bold'); doc.text("Service", 10, y); doc.text("Price(₦)", 65, y, { align: "right" }); y += lineHeight;
+                doc.setFont(undefined, 'normal');
+                cart.forEach(s => {
+                    const lines = wrapText(s.name, 50);
+                    const amount = (s.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 });
+                    lines.forEach((line, idx) => {
+                        doc.text(line, 10, y);
+                        if(idx === 0) doc.text(amount, 65, y, { align: "right" });
+                        y += lineHeight;
+                    });
+                });
 
+                doc.text("----------------------------------------", 10, y); y += lineHeight;
 
-      } catch(err) {
-        statusMessage.style.color='red';
-        statusMessage.textContent='Booking failed. Please contact support.';
-      }
+                if(voucher){
+                    const voucherLines = wrapText(`Voucher: ${voucher.code}`, 60);
+                    voucherLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
+                }
+
+                doc.setFont(undefined,'bold');
+                doc.text("Total Paid:", 10, y);
+                doc.text((payBtn.dataset.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }), 65, y, { align: "right" });
+                y += lineHeight*2;
+
+                doc.setFont(undefined,'normal');
+                payRefLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
+
+                doc.text("Thank you for your booking!", 40, y, { align: "center" });
+
+                doc.save(`Invoice-${payRef}.pdf`);
+
+                statusMessage.style.color='green';
+                statusMessage.textContent='Booking confirmed! Invoice downloaded. Payment reference: '+payRef;
+                cart=[];
+                updateCart();
+                populateAvailableTimes();
+            };
+
+        } catch(err){
+            statusMessage.style.color='red';
+            statusMessage.textContent='Booking failed. Please contact support.';
+        }
     },
-    onClose: function() { alert('Payment cancelled'); }
-  });
+    onCancel: () => {
+        alert('Payment cancelled');
+    }
+});
+
   handler.openIframe();
 });
 
