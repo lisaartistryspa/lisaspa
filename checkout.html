@@ -495,23 +495,37 @@
       });
 
       let discountedTotal = total;
+
       if (voucher) {
+        let discount = 0;
+
         if (voucher.type === "percent") {
-          const discount = (voucher.value / 100) * total;
+          // Percentage-based discount
+          discount = (voucher.value / 100) * total;
           discountedTotal = total - discount;
-          totalEl.innerHTML = `Total: <s>₦${(total / 100).toLocaleString()}</s> 
-            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong> 
-            <br><small>(${voucher.value}% off - ${voucher.code})</small>`;
-        } else if (voucher.type === "fixed") {
-          const discount = voucher.value * 100;
+
+          totalEl.innerHTML = `
+            Total: <s>₦${(total / 100).toLocaleString()}</s> 
+            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong>
+            <br><small>(${voucher.value}% off - ${voucher.code})</small>
+          `;
+
+        } else if (voucher.type === "amount") {
+          // Fixed amount discount (₦)
+          discount = voucher.value * 100; // convert Naira to Kobo if using Paystack
           discountedTotal = Math.max(0, total - discount);
-          totalEl.innerHTML = `Total: <s>₦${(total / 100).toLocaleString()}</s> 
-            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong> 
-            <br><small>(₦${voucher.value.toLocaleString()} off - ${voucher.code})</small>`;
+
+          totalEl.innerHTML = `
+            Total: <s>₦${(total / 100).toLocaleString()}</s> 
+            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong>
+            <br><small>(₦${voucher.value.toLocaleString()} off - ${voucher.code})</small>
+          `;
         }
       } else {
+        // No voucher applied
         totalEl.textContent = `Total: ₦${(total / 100).toLocaleString()}`;
       }
+
 
       payBtn.disabled = discountedTotal <= 0;
       payBtn.dataset.amount = discountedTotal;
@@ -626,6 +640,7 @@ paystack.newTransaction({
                 services: cart,
                 date,
                 time,
+                status: 'Pending',
                 amount: Number(payBtn.dataset.amount),
                 voucher: voucher ? voucher.code : '',
                 ref: payRef,

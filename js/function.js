@@ -11,7 +11,7 @@
 	
 	/* Preloader Effect */
 	$window.load(function() {
-	    $(".preloader").fadeOut(200);
+	    $(".preloader").fadeOut(100);
     });
 	
 	/* Top Menu */
