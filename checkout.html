@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Lisa Artistry Spa | Booking & Tracking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link rel="icon" type="image/png" href="images/lisa.png"> -->
 <link rel="icon" href="images/lisa.png" sizes="any">
 <link rel="icon" type="image/svg+xml" href="images/lisa.png">
 <link rel="apple-touch-icon" href="images/lisa.png">
@@ -12,266 +11,152 @@
 <link href="https://fonts.googleapis.com/css?family=Merienda+One%7cMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Merienda+One%7cMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
-	<!-- Bootstrap css -->
-	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<!-- Font Awesome icon css-->
-	<link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-	<link href="css/flaticon.css" rel="stylesheet" media="screen">
-	<!-- Slick nav css -->
-	<link rel="stylesheet" href="css/slicknav.css">
-	<!-- Main custom css -->
-	<link href="css/custom.css" rel="stylesheet" media="screen" >
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
+<link href="css/flaticon.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="css/slicknav.css">
+<link href="css/custom.css" rel="stylesheet" media="screen" >
 
 <style>
-    *{
-        margin:0;
-        padding:0;
-    }
-  body {font-family: 'Montserrat', sans-serif !important; background: #f6f9fc; color: #013a63;}
-  
-  h2 {text-align: center; color: #d3177b; margin-bottom: 20px; font-weight: lighter;}
-  h3 {font-weight: lighter;}
-  label {display: block; margin-top: 12px; font-weight: 600;}
-  input, select, button {width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #cfd8dc; font-size: 0.95rem;}
-  input:focus {
-    border-color: #a2c4f1 !important;
-    outline: none;
-    box-shadow: 0 0 3px #a2c4f1;
-  }
-  button { background: #c18cd9; color: white; cursor: pointer; margin-top: 12px; font-size:16px;}
-  button:hover {opacity: 0.9;}
-  .cart-summary {margin-top: 20px; background: transparent; padding: 15px; border-radius: 12px;}
-  .cart-summary h3 {margin-bottom: 10px;}
-  table {width: 100%; border-collapse: collapse; margin-top: 10px;}
-  th, td {padding: 10px; border-bottom: 1px solid #cfd8dc; text-align: left;}
-  th {background: #FF69B4; color: white;}
-  .remove-btn { display: flex; justify-content:center; align-items:center; background: transparent; color: #d3177b; border: none; padding: 5px 10px; cursor: pointer; }
-  #total { font-weight: bold; margin-top: 10px; text-align: right; font-size: 1.1rem; }
-  #statusMessage { margin-top: 12px; font-weight: 600; text-align: center; }
-  .hidden { display:none; }
-  .booking-status { background: #e6f9e8; border-radius: 10px; padding: 15px; margin-top: 15px; }
+*{margin:0;padding:0;}
+body {font-family: 'Montserrat', sans-serif !important; background: #f6f9fc; color: #013a63;}
+h2 {text-align: center; color: #d3177b; margin-bottom: 20px; font-weight: lighter;}
+h3 {font-weight: lighter;}
+label {display: block; margin-top: 12px; font-weight: 600;}
+input, select, button {width: 100%; padding: 10px; margin-top: 6px; border-radius: 8px; border: 1px solid #cfd8dc; font-size: 0.95rem;}
+input:focus {border-color: #a2c4f1 !important; outline: none; box-shadow: 0 0 3px #a2c4f1;}
+button { background: #c18cd9; color: white; cursor: pointer; margin-top: 12px; font-size:16px;}
+button:hover {opacity: 0.9;}
+.cart-summary {margin-top: 20px; background: transparent; padding: 15px; border-radius: 12px;}
+.cart-summary h3 {margin-bottom: 10px;}
+table {width: 100%; border-collapse: collapse; margin-top: 10px;}
+th, td {padding: 10px; border-bottom: 1px solid #cfd8dc; text-align: left;}
+th {background: #FF69B4; color: white;}
+.remove-btn { display: flex; justify-content:center; align-items:center; background: transparent; color: #d3177b; border: none; padding: 5px 10px; cursor: pointer; }
+#total { font-weight: bold; margin-top: 10px; text-align: right; font-size: 1.1rem; }
+#statusMessage { margin-top: 12px; font-weight: 600; text-align: center; }
+.hidden { display:none; }
+.booking-status { background: #e6f9e8; border-radius: 10px; padding: 15px; margin-top: 15px; }
 
-   .container0{
-        width: 95% !important; 
-        margin-top:30px;
-        margin-left: 2.5%; 
-        background: transparent; 
-        padding: 30px; 
-        border-radius: 16px; 
-        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        display: flex;
-        justify-content: space-between;
-    }
+.container0{
+    width: 95% !important; 
+    margin-top:30px;
+    margin-left: 2.5%; 
+    background: transparent; 
+    padding: 30px; 
+    border-radius: 16px; 
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-between;
+}
 
-    #bookingsSection{
-        float:left;
-        width: 50%;
-        
-    }
+#bookingsSection{float:left;width:50%;}
+#checkoutSection{float:left;width:40%; background-color: #f5f0f2; box-shadow: 0 8px 30px rgba(0,0,0,0.06); border-radius: 16px;}
 
-    #checkoutSection{
-        float:left;
-        width: 40%;
-        background-color: #f5f0f2;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        border-radius: 16px;
-    }
+@media(max-width: 992px){
+    .container0{width: 80%; margin-left:4%; flex-direction: column; row-gap: 30px;}
+    #bookingsSection{float:left; width:100%;}
+    #checkoutSection{float:left; width:100%;}
+}
 
-    @media(max-width: 992px){
-         .container0{
-            width: 80%;
-            margin-left:4%; 
-            flex-direction: column;
-            row-gap: 30px;
-        }
-
-        #bookingsSection{
-            float:left;
-            width: 100%;
-        
-        }
-
-        #checkoutSection{
-            float:left;
-            width: 100%;
-            background-color: #f5f0f2;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-            border-radius: 16px;
-        }
-    }
-
-    tr{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        background-color: #fff;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        border-radius: 16px !important;
-        margin-top:10px !important;
-    }
-
-    td{
-        border: none;
-    }
-
-    .speci{
-      background-color: #fff !important;
-      color: #121212 !important;
-      display: inline-block;
-      margin-top:5px;
-      border-radius: 5px;
-    }
-
-    .speci a{
-      padding: 10px 15px !important;
-      color:#121212 !important;
-    }
-
-    .speci a:hover{
-			border-radius: 5px;
-			background-color: #e6a3c4 !important;
-			color: #fff !important;
-		}
-
-    .don {
-			width: 200px;
-			height: 200px;
-			border-radius: 50%;
-			object-fit: cover;
-			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-			animation: pulse 2s infinite;
-		}
-
-		@keyframes pulse {
-			0% {
-			transform: scale(1);
-			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-			}
-			70% {
-			transform: scale(1.05);
-			box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-			}
-			100% {
-			transform: scale(1);
-			box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-			}
-		}
-
-    
-
+tr{display: flex; justify-content: space-around; align-items: center; background-color: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.06); border-radius: 16px !important; margin-top:10px !important;}
+td{border: none;}
+.speci{background-color: #fff !important; color: #121212 !important; display: inline-block; margin-top:5px; border-radius: 5px;}
+.speci a{padding: 10px 15px !important; color:#121212 !important;}
+.speci a:hover{border-radius: 5px; background-color: #e6a3c4 !important; color: #fff !important;}
+.don {width: 200px; height: 200px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); animation: pulse 2s infinite;}
+@keyframes pulse {0% {transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);} 70% {transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);} 100% {transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);}}
+.toolTipper{position: fixed; top: 20px; right: 20px; background: #854385; color: white; padding: 10px 15px; border-radius: 8px; font-weight: 400; display: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2);}
+@media(max-width: 992px){.toolTipper{font-size: 13px;}}
 </style>
 </head>
 <body>
 
-    <div class="preloader">
-		<div class="browser-screen-loading-content">
-			<div class="loading-dots dark-gray">
-					<img class="don" src="images/lisawhite.png" alt="Preloader" width="120px" height="120px" />
-			</div>
-		</div>
+<div class="preloader">
+    <div class="browser-screen-loading-content">
+        <div class="loading-dots dark-gray">
+                <img class="don" src="images/lisawhite.png" alt="Preloader" width="120px" height="120px" />
+        </div>
     </div>
+</div>
 
-	
-	<!-- Header Section Starts-->
-	<header>
-		<nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<!-- Logo starts -->
-					<a class="navbar-brand" href="#">
-						<img src="images/lisa.png" alt="Logo"/>
-					</a>
-					<!-- Logo Ends -->
-					
-					<!-- Responsive Menu button starts -->
-					<div class="navbar-toggle">
-					</div>
-					<!-- Responsive Menu button Ends -->
-				</div>
-				
-				<div id="responsive-menu"></div>
-				
-				<!-- Navigation starts -->
-				<div class="navbar-collapse collapse" id="navigation">
-					<ul class="nav navbar-nav navbar-right main-navigation" id="main-menu">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="index.html#about">About</a></li>
-						<li><a href="index.html#service">Service</a></li>
-						<li><a href="index.html#testi">Testimonials</a></li>
-						<li><a href="index.html#ourteam">Therapist</a></li>
-						<li><a href="index.html#gallery">Gallery</a></li>
-						<li><a href="index.html#contact">Review</a></li>
-						<li class="active speci"><a href="#" target="_blank">Bookings</a></li>
-					</ul>
-				</div>
-				<!-- Navigation Ends -->
-			</div>
-		</nav>
-	</header>
-	<!-- Header Section Ends-->
+<div id="tooltip" class="toolTipper">Service added to checkout!</div>
 
-  <div class="container0">
-    <!-- BOOKINGS SECTION -->
+<header>
+    <nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="images/lisa.png" alt="Logo"/></a>
+                <div class="navbar-toggle"></div>
+            </div>
+            <div id="responsive-menu"></div>
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right main-navigation" id="main-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#service">Service</a></li>
+                    <li><a href="index.html#testi">Testimonials</a></li>
+                    <li><a href="index.html#ourteam">Therapist</a></li>
+                    <li><a href="index.html#gallery">Gallery</a></li>
+                    <li><a href="index.html#contact">Review</a></li>
+                    <li class="active speci"><a href="#" target="_blank">Bookings</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container0">
     <div id="bookingsSection">
-      <div style="text-align:center;">
-        <img src="images/lisa.png" alt="Logo" width="100px" />
-        <h2>Lisa Artistry Spa Booking</h2>
-        <p style="color: #918d8d; font-size: 14px;">Fill out the form to secure your appointment. Once payment is completed, your invoice will be automatically generated.</p>
-      </div>
+        <div style="text-align:center;">
+            <img src="images/lisa.png" alt="Logo" width="100px" />
+            <h2>Lisa Artistry Spa Booking</h2>
+            <p style="color: #918d8d; font-size: 14px;">Fill out the form to secure your appointment. Once payment is completed, your invoice will be automatically generated.</p>
+        </div>
 
-      <label>Full Name</label>
-      <input type="text" id="customerName">
-
-      <label>Email Address</label>
-      <input type="email" id="email">
-
-      <label>Phone Number</label>
-      <input type="tel" id="phone">
-
-      <label>Select Service Location</label>
-      <select id="serviceMode">
-        <option value="">---Select---</option>
-        <option value="inSpa">In Spa</option>
-        <option value="homeService">Home Service</option>
-      </select>
-
-      <div id="addressField" class="hidden">
-        <label>Home Address</label>
-        <input type="text" id="address" placeholder="Enter your address">
-      </div>
-
-      <label>Select Service Type</label>
-      <select id="serviceType">
-        <option value="">---Select Type---</option>
-        <option value="Massage">Massage</option>
-        <option value="Body Scrubs">Body Scrubs</option>
-        <option value="Facials">Facials</option>
-        <option value="Pedicure">Pedicure</option>
-      </select>
-
-      <label>Select Service</label>
-      <select id="serviceSelect" disabled>
-        <option value="">---Select---</option>
-      </select>
-
-      <label>Date</label>
-      <input type="text" id="date" placeholder="Select booking date">
-
-      <label>Time</label>
-      <select id="timeSelect">
-        <option value="">---Select Time---</option>
-      </select>
-
-      <button id="addServiceBtn" disabled>Add Service</button>
+        <label>Full Name</label>
+        <input type="text" id="customerName">
+        <label>Email Address</label>
+        <input type="email" id="email">
+        <label>Phone Number</label>
+        <input type="tel" id="phone">
+        <label>Select Service Location</label>
+        <select id="serviceMode">
+            <option value="">---Select---</option>
+            <option value="inSpa">In Spa</option>
+            <option value="homeService">Home Service</option>
+        </select>
+        <div id="addressField" class="hidden">
+            <label>Home Address</label>
+            <input type="text" id="address" placeholder="Enter your address">
+        </div>
+        <label>Select Service Type</label>
+        <select id="serviceType">
+            <option value="">---Select Type---</option>
+            <option value="Massage">Massage</option>
+            <option value="Body Scrubs">Body Scrubs</option>
+            <option value="Facials">Facials</option>
+            <option value="Pedicure">Pedicure</option>
+            <option value="Waxing">Waxing</option>
+            <option value="Lash Extension">Lash Extension</option>
+        </select>
+        <label>Select Service</label>
+        <select id="serviceSelect" disabled>
+            <option value="">---Select---</option>
+        </select>
+        <label>Date</label>
+        <input type="text" id="date" placeholder="Select booking date">
+        <label>Time</label>
+        <select id="timeSelect">
+            <option value="">---Select Time---</option>
+        </select>
+        <button id="addServiceBtn" disabled>Add Service</button>
     </div>
 
-    <!-- CHECKOUT SECTION -->
     <div id="checkoutSection">
         <div class="checkone" style="width: 92%; margin-left: 4%;">
             <br><br>
             <h2 style="font-size: 25px;">Checkout & Payment</h2>
-
             <div class="cart-summary">
                 <h3 style="font-size: 18px;">Selected Services</h3>
                 <table id="cartTable">
@@ -286,327 +171,403 @@
                 </table>
                 <p id="total">Total: ₦0</p>
             </div>
-
             <div style="margin-top: 15px;">
                 <label>Have a Voucher?</label>
                 <div style="display: flex; gap: 8px;">
-                <input type="text" id="voucherCode" placeholder="Enter voucher code" style="flex: 1;">
-                <button type="button" id="applyVoucherBtn" style="width:auto; background:#FF69B4;">Apply</button>
+                    <input type="text" id="voucherCode" placeholder="Enter voucher code" style="flex: 1;">
+                    <button type="button" id="applyVoucherBtn" style="width:auto; background:#FF69B4;">Apply</button>
                 </div>
                 <p id="voucherStatus" style="margin-top:8px; font-weight:600; color:#444;"></p>
             </div>
-
-
             <div>
               <p style="font-size:13px;"> Please read the <a style="color: #FF69B4;" href="terms.html" target="_blank">Terms & Conditions</a> before making payment.</p>
             </div>
             <button id="payBtn" disabled>Pay & Confirm Booking</button>
             <div id="statusMessage" style="color:green;"></div>
         </div>
-      
     </div>
-  </div>
+</div>
 
-  <!-- Footer section starts -->
-   <br>
-   <br>
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="footer-logo">
-					
-						<a href="index.html">
-							  <img src="images/lisa.png" alt="Logo" width="auto" height="200px"/>
-						</a>
-	
-					</div>
-						
-					<div class="footer-social">
-						<!-- <a href="#"><i class="fa fa-facebook"></i></a> -->
-						<a href="#"><i class="bi bi-tiktok"></i></a>
-						<a href="#"><i class="fa fa-instagram"></i></a>
-						<a href="#"><i class="fa fa-linkedin"></i></a>
-					</div>
-
-          <div class="footer-info">
-            <p style="color: #fff;"><i class="bi bi-telephone"></i> &nbsp; +2349016524043</p>
-            <p style="color: #fff;"><i class="bi bi-geo-alt"></i> &nbsp; 17 Oyenuga Street Surulere Lagos.</p>
-          </div>
-				</div>
-			</div>
+<!-- Footer section starts -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="footer-logo">
+                    <a href="index.html"><img src="images/lisa.png" alt="Logo" width="auto" height="200px"/></a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="bi bi-tiktok"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                </div>
+                <div class="footer-info">
+                    <p style="color: #fff;"><i class="bi bi-telephone"></i> &nbsp; +2349016524043</p>
+                    <p style="color: #fff;"><i class="bi bi-geo-alt"></i> &nbsp; 17 Oyenuga Street Surulere Lagos.</p>
+                </div>
+            </div>
+        </div>
       <br>
-			
-			<div class="row" >
-				<div class="col-md-6">
-					<div class="footer-info">
-						<p>Copyright &copy; Lisa Artistry Spa. All rights reserved.</p>
-					</div>
-				</div>
-				
-				<div class="col-md-6">
-					<div class="footer-menu">
-						<ul>
-              <!-- <li><a href="index.html#about">About</a></li> -->
-              <li><a href="index.html#service">Services</a></li>
-              <li><a href="index.html#contact">Reviews</a></li>
-              <li><a href="index.html#ourteam">Therapist</a></li>
-              <li class="active speci"><a href="#" target="_blank">Bookings</a></li>
-              
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+        <div class="row" >
+            <div class="col-md-6">
+                <div class="footer-info">
+                    <p>Copyright &copy; Lisa Artistry Spa. All rights reserved.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="footer-menu">
+                    <ul>
+                      <li><a href="index.html#service">Services</a></li>
+                      <li><a href="index.html#contact">Reviews</a></li>
+                      <li><a href="index.html#ourteam">Therapist</a></li>
+                      <li class="active speci"><a href="#" target="_blank">Bookings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-  <!-- Jquery Library File -->
-	<script src="js/jquery-1.12.4.min.js"></script>
-	<!-- Parallax -->
-	<script src="js/jquery.parallax-1.1.3.js"></script>
+<!-- Scripts -->
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery.parallax-1.1.3.js"></script>
+<script src="js/SmoothScroll.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/validator.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/isotope.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/owl.carousel.js"></script>
+<script src="js/typed.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAsdzx6REuLqvQJC9VffvqM_84hUlKbWyM"></script> 
+<script src="js/function.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://js.paystack.co/v2/inline.js"></script>
 
-	<!-- SmoothScroll -->
-	<script src="js/SmoothScroll.js"></script>
-    <!-- Bootstrap js file -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Bootstrap form validator -->
-	<script src="js/validator.min.js"></script>
-    <!-- Counterup js file -->
-	<script src="js/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
-    <!-- Isotop js file -->
-	<script src="js/isotope.min.js"></script>
-    <!-- Slick Nav js file -->
-	<script src="js/jquery.slicknav.js"></script>
-	<!-- Owl Carousel js file -->
-	<script src="js/owl.carousel.js"></script>
-    <!-- Typed js file -->
-	<script src="js/typed.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAsdzx6REuLqvQJC9VffvqM_84hUlKbWyM"></script> 
-    <!-- Main Custom js file -->
-    <script src="js/function.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://js.paystack.co/v2/inline.js"></script>
+// ---------- FIREBASE ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyCx3I1FRYpOPi2ponH88fapPZFK0TUX3xk",
+  authDomain: "lisaartistryspa-761ac.firebaseapp.com",
+  projectId: "lisaartistryspa-761ac",
+  storageBucket: "lisaartistryspa-761ac.firebasestorage.app",
+  messagingSenderId: "974775812115",
+  appId: "1:974775812115:web:ba03bce66cf7eb147f3fe6"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+// ---------- DOM ----------
+const modeSelect = document.getElementById('serviceMode');
+const addressField = document.getElementById('addressField');
+const serviceTypeSelect = document.getElementById('serviceType');
+const serviceSelect = document.getElementById('serviceSelect');
+const addServiceBtn = document.getElementById('addServiceBtn');
+const cartTableBody = document.querySelector('#cartTable tbody');
+const totalEl = document.getElementById('total');
+const payBtn = document.getElementById('payBtn');
+const statusMessage = document.getElementById('statusMessage');
+const dateInput = document.getElementById('date');
+const timeSelect = document.getElementById('timeSelect');
+const voucherInput = document.getElementById('voucherCode');
+const applyVoucherBtn = document.getElementById('applyVoucherBtn');
+const voucherStatus = document.getElementById('voucherStatus');
+const tooltip = document.getElementById('tooltip');
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCx3I1FRYpOPi2ponH88fapPZFK0TUX3xk",
-      authDomain: "lisaartistryspa-761ac.firebaseapp.com",
-      projectId: "lisaartistryspa-761ac",
-      storageBucket: "lisaartistryspa-761ac.firebasestorage.app",
-      messagingSenderId: "974775812115",
-      appId: "1:974775812115:web:ba03bce66cf7eb147f3fe6"
-    };
+// ---------- State ----------
+let cart = []; // each item: { name, amount } where amount is in kobo (integer)
+let voucher = null; // { code, type: 'percent' | 'amount', value } value: number (percent or Naira)
+let loadingTimes = false;
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+// ---------- Utilities ----------
+function showTooltip(msg, duration = 1800) {
+  tooltip.textContent = msg;
+  tooltip.style.display = 'block';
+  tooltip.style.opacity = '1';
+  setTimeout(()=> {
+    tooltip.style.transition = 'opacity 0.4s';
+    tooltip.style.opacity = '0';
+    setTimeout(()=> tooltip.style.display = 'none', 400);
+  }, duration);
+}
 
-    const modeSelect = document.getElementById('serviceMode');
-    const addressField = document.getElementById('addressField');
-    const serviceTypeSelect = document.getElementById('serviceType');
-    const serviceSelect = document.getElementById('serviceSelect');
-    const addServiceBtn = document.getElementById('addServiceBtn');
-    const cartTable = document.querySelector('#cartTable tbody');
-    const totalEl = document.getElementById('total');
-    const payBtn = document.getElementById('payBtn');
-    const statusMessage = document.getElementById('statusMessage');
-    const dateInput = document.getElementById('date');
-    const timeSelect = document.getElementById('timeSelect');
+function setStatus(msg, color='green') {
+  statusMessage.style.color = color;
+  statusMessage.textContent = msg;
+}
 
-    let cart = [];
-    let voucher = null;
-    const voucherInput = document.getElementById('voucherCode');
-    const applyVoucherBtn = document.getElementById('applyVoucherBtn');
-    const voucherStatus = document.getElementById('voucherStatus');
+function formatNaira(kobo) {
+  // Expect integer kobo
+  const naira = kobo / 100;
+  // Build string carefully digit-by-digit
+  return naira.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
-    // Show/hide address
-    modeSelect.addEventListener('change', () => {
-      addressField.classList.toggle('hidden', modeSelect.value !== 'homeService');
-      serviceSelect.innerHTML = '<option value="">---Select---</option>';
-      serviceSelect.disabled = true;
-      addServiceBtn.disabled = true;
+// ---------- UI: show/hide address ----------
+modeSelect.addEventListener('change', () => {
+  addressField.classList.toggle('hidden', modeSelect.value !== 'homeService');
+  serviceSelect.innerHTML = '<option value="">---Select---</option>';
+  serviceSelect.disabled = true;
+  addServiceBtn.disabled = true;
+});
+
+// ---------- Load services from Firestore ----------
+serviceTypeSelect.addEventListener('change', async () => {
+  const type = serviceTypeSelect.value;
+  const mode = modeSelect.value;
+  serviceSelect.innerHTML = '<option>Loading...</option>';
+  serviceSelect.disabled = true;
+  addServiceBtn.disabled = true;
+  if (!type || !mode) {
+    serviceSelect.innerHTML = '<option value="">---Select---</option>';
+    return;
+  }
+
+  try {
+    const qSnap = query(collection(db, "services"), where("type", "==", type), where("mode", "==", mode));
+    const snap = await getDocs(qSnap);
+    if (snap.empty) {
+      serviceSelect.innerHTML = '<option>No services found</option>';
+      return;
+    }
+    serviceSelect.innerHTML = '<option value="">---Select---</option>';
+    snap.forEach(d => {
+      const s = d.data();
+      const option = document.createElement('option');
+      option.value = s.name;
+      // store amount in kobo (if stored in DB as integer kobo already, adapt accordingly)
+      // Here we assume s.amount is in kobo (like other parts of your code). If it's in Naira, multiply by 100.
+      option.dataset.amount = s.amount;
+      option.textContent = `${s.name} — ₦${(s.amount / 100).toLocaleString()}`;
+      serviceSelect.appendChild(option);
     });
+    serviceSelect.disabled = false;
+    addServiceBtn.disabled = false;
+  } catch (err) {
+    console.error('Failed loading services', err);
+    serviceSelect.innerHTML = '<option>Error loading services</option>';
+  }
+});
 
-    // Load services
-    serviceTypeSelect.addEventListener('change', async () => {
-      const type = serviceTypeSelect.value;
-      const mode = modeSelect.value;
-      if (!type || !mode) return;
+// ---------- Cart behavior (prevent duplicates, robust rendering) ----------
+function updateCart() {
+  // Clear
+  cartTableBody.innerHTML = '';
 
-      serviceSelect.innerHTML = '<option>Loading...</option>';
-      const qSnap = query(collection(db, "services"), where("type", "==", type), where("mode", "==", mode));
-      const snap = await getDocs(qSnap);
-      if (snap.empty) {
-        serviceSelect.innerHTML = '<option>No services found</option>';
-        return;
-      }
-      serviceSelect.innerHTML = '<option value="">---Select---</option>';
-      snap.forEach(d => {
-        const s = d.data();
-        const option = document.createElement('option');
-        option.value = s.name;
-        option.dataset.amount = s.amount;
-        option.textContent = `${s.name} — ₦${(s.amount / 100).toLocaleString()}`;
-        serviceSelect.appendChild(option);
-      });
-      serviceSelect.disabled = false;
-      addServiceBtn.disabled = false;
-    });
+  if (!cart || cart.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="3" style="padding:30px;text-align:center;color:#999;">
+                      <i class="bi bi-cart-x" style="font-size:48px;"></i><br>No services added yet
+                    </td>`;
+    cartTableBody.appendChild(tr);
+    totalEl.textContent = "Total: ₦0";
+    payBtn.disabled = true;
+    delete payBtn.dataset.amount;
+    return;
+  }
 
-    // Add service
-    addServiceBtn.addEventListener('click', () => {
-      const selected = serviceSelect.selectedOptions[0];
-      if (!selected || !selected.value) return;
-      cart.push({ name: selected.value, amount: Number(selected.dataset.amount) });
+  let total = 0;
+  cart.forEach((item, idx) => {
+    total += Number(item.amount); // kobo
+
+    const tr = document.createElement('tr');
+
+    const tdName = document.createElement('td');
+    tdName.textContent = item.name;
+    tdName.style.flex = '1';
+
+    const tdPrice = document.createElement('td');
+    tdPrice.textContent = `₦${formatNaira(item.amount)}`;
+    tdPrice.style.textAlign = 'right';
+    tdPrice.style.minWidth = '120px';
+
+    const tdRemove = document.createElement('td');
+    tdRemove.style.width = '48px';
+    tdRemove.style.textAlign = 'center';
+
+    const btnRemove = document.createElement('button');
+    btnRemove.className = 'remove-btn';
+    btnRemove.type = 'button';
+    btnRemove.setAttribute('data-index', idx);
+    btnRemove.innerHTML = `<i class="bi bi-trash"></i>`;
+    btnRemove.addEventListener('click', () => {
+      cart.splice(idx, 1);
       updateCart();
     });
 
-    // Remove service
-    cartTable.addEventListener('click', e => {
-      if (e.target.closest('.remove-btn')) {
-        const idx = Number(e.target.closest('.remove-btn').dataset.index);
-        cart.splice(idx, 1);
-        updateCart();
+    tdRemove.appendChild(btnRemove);
+    tr.appendChild(tdName);
+    tr.appendChild(tdPrice);
+    tr.appendChild(tdRemove);
+
+    cartTableBody.appendChild(tr);
+  });
+
+  // Compute discounted total
+  let discountedTotal = total;
+  if (voucher) {
+    if (voucher.type === 'percent') {
+      // careful arithmetic: compute discount in kobo
+      const discountKobo = Math.round((voucher.value / 100) * total);
+      discountedTotal = Math.max(0, total - discountKobo);
+      totalEl.innerHTML = `Total: <s>₦${formatNaira(total)}</s> <strong style="color:#28a745;">₦${formatNaira(discountedTotal)}</strong><br><small>(${voucher.value}% off - ${voucher.code})</small>`;
+    } else if (voucher.type === 'amount') {
+      // voucher.value is stored in Naira in DB (we'll convert to kobo)
+      const discountKobo = Math.round(Number(voucher.value) * 100);
+      discountedTotal = Math.max(0, total - discountKobo);
+      totalEl.innerHTML = `Total: <s>₦${formatNaira(total)}</s> <strong style="color:#28a745;">₦${formatNaira(discountedTotal)}</strong><br><small>(₦${Number(voucher.value).toLocaleString()} off - ${voucher.code})</small>`;
+    }
+  } else {
+    totalEl.textContent = `Total: ₦${formatNaira(total)}`;
+  }
+
+  payBtn.dataset.amount = String(Math.max(0, Math.round(discountedTotal))); // kobo numeric string
+  payBtn.disabled = Number(payBtn.dataset.amount) <= 0;
+}
+
+// Add service — prevents duplicates
+addServiceBtn.addEventListener('click', () => {
+  const selected = serviceSelect.selectedOptions[0];
+  if (!selected || !selected.value) return;
+
+  const name = selected.value;
+  const amount = Number(selected.dataset.amount); // assume already in kobo
+
+  // Prevent duplicates by name
+  if (cart.some(it => it.name === name)) {
+    showTooltip('Service already added.');
+    return;
+  }
+
+  cart.push({ name, amount });
+  updateCart();
+  showTooltip(`"${name}" added to checkout!`);
+});
+
+// ---------- Voucher: checks Firestore vouchers collection ----------
+applyVoucherBtn.addEventListener('click', async () => {
+  const codeRaw = voucherInput.value.trim();
+  if (!codeRaw) {
+    voucherStatus.style.color = 'red';
+    voucherStatus.textContent = 'Please enter a voucher code.';
+    return;
+  }
+  const code = codeRaw.toUpperCase();
+  voucherStatus.textContent = 'Checking voucher...';
+  voucherStatus.style.color = '#444';
+
+  try {
+    const qSnap = query(collection(db, 'vouchers'), where('code', '==', code), where('active', '==', true));
+    const snap = await getDocs(qSnap);
+    if (snap.empty) {
+      voucher = null;
+      voucherStatus.style.color = 'red';
+      voucherStatus.textContent = 'Invalid or inactive voucher.';
+      updateCart();
+      return;
+    }
+    const data = snap.docs[0].data();
+    // expiry check: assume data.expiry in 'YYYY-MM-DD' format or null
+    const today = new Date().toISOString().split('T')[0];
+    if (data.expiry && data.expiry < today) {
+      voucher = null;
+      voucherStatus.style.color = 'red';
+      voucherStatus.textContent = 'Voucher expired.';
+      updateCart();
+      return;
+    }
+    // Acceptable voucher: needs type and value; type can be "percent" or "amount" (amount in Naira)
+    voucher = { code: data.code, type: data.type, value: data.value };
+    voucherStatus.style.color = 'green';
+    voucherStatus.textContent = `Voucher "${data.code}" applied successfully.`;
+    updateCart();
+  } catch (err) {
+    console.error('Voucher lookup failed', err);
+    voucherStatus.style.color = 'red';
+    voucherStatus.textContent = 'Error checking voucher.';
+  }
+});
+
+// ---------- Time slots: generate & mark booked ----------
+flatpickr("#date", { dateFormat: "Y-m-d", minDate: "today", onChange: populateAvailableTimes });
+
+function generateTimeSlots() {
+  const slots = [];
+  let start = new Date();
+  start.setHours(8, 0, 0, 0);
+  const end = new Date();
+  end.setHours(20, 0, 0, 0);
+  while (start <= end) {
+    slots.push(`${start.getHours().toString().padStart(2, '0')}:00`);
+    start.setHours(start.getHours() + 2);
+  }
+  return slots;
+}
+
+async function populateAvailableTimes() {
+  const date = dateInput.value;
+  timeSelect.innerHTML = '<option>Loading times...</option>';
+  timeSelect.disabled = true;
+  loadingTimes = true;
+
+  if (!date) {
+    timeSelect.innerHTML = '<option value="">---Select Time---</option>';
+    timeSelect.disabled = false;
+    loadingTimes = false;
+    return;
+  }
+
+  try {
+    // Fetch bookings for date
+    const snapshot = await getDocs(collection(db, 'bookings'));
+    const docs = snapshot.docs.map(d => d.data()).filter(b => b.date === date);
+
+    // Build blocked slots: each booking blocks N slots where N = number of services (each service = 2 hours)
+    const bookedTimes = new Set();
+    docs.forEach(b => {
+      // b.time like '10:00'
+      let startHour = Number(b.time.split(':')[0]);
+      const numSlots = (Array.isArray(b.services) ? b.services.length : 1);
+      for (let i = 0; i < numSlots; i++) {
+        const slot = `${startHour.toString().padStart(2, '0')}:00`;
+        bookedTimes.add(slot);
+        startHour += 2;
       }
     });
 
-    function updateCart() {
-      cartTable.innerHTML = '';
-      let total = 0;
-
-      if (cart.length === 0) {
-        cartTable.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#999;">No services added yet</td></tr>`;
-        totalEl.textContent = "Total: ₦0";
-        payBtn.disabled = true;
-        return;
-      }
-
-      cart.forEach((item, idx) => {
-        total += item.amount;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${item.name}</td>
-          <td>₦${(item.amount / 100).toLocaleString()}</td>
-          <td><button class="remove-btn" data-index="${idx}"><i class="bi bi-trash"></i></button></td>`;
-        cartTable.appendChild(tr);
-      });
-
-      let discountedTotal = total;
-
-      if (voucher) {
-        let discount = 0;
-
-        if (voucher.type === "percent") {
-          // Percentage-based discount
-          discount = (voucher.value / 100) * total;
-          discountedTotal = total - discount;
-
-          totalEl.innerHTML = `
-            Total: <s>₦${(total / 100).toLocaleString()}</s> 
-            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong>
-            <br><small>(${voucher.value}% off - ${voucher.code})</small>
-          `;
-
-        } else if (voucher.type === "amount") {
-          // Fixed amount discount (₦)
-          discount = voucher.value * 100; // convert Naira to Kobo if using Paystack
-          discountedTotal = Math.max(0, total - discount);
-
-          totalEl.innerHTML = `
-            Total: <s>₦${(total / 100).toLocaleString()}</s> 
-            <strong style="color:#28a745;">₦${(discountedTotal / 100).toLocaleString()}</strong>
-            <br><small>(₦${voucher.value.toLocaleString()} off - ${voucher.code})</small>
-          `;
-        }
+    timeSelect.innerHTML = '<option value="">Select time</option>';
+    generateTimeSlots().forEach(slot => {
+      const opt = document.createElement('option');
+      opt.value = slot;
+      if (bookedTimes.has(slot)) {
+        opt.disabled = true;
+        opt.textContent = `${slot} — Full`;
+        opt.style.color = 'red';
       } else {
-        // No voucher applied
-        totalEl.textContent = `Total: ₦${(total / 100).toLocaleString()}`;
+        opt.textContent = `${slot} — Available`;
       }
-
-
-      payBtn.disabled = discountedTotal <= 0;
-      payBtn.dataset.amount = discountedTotal;
-    }
-
-    applyVoucherBtn.addEventListener('click', async () => {
-      const code = voucherInput.value.trim().toUpperCase();
-      if (!code) return (voucherStatus.textContent = "Please enter a code.", voucherStatus.style.color = "red");
-
-      try {
-        const qSnap = query(collection(db, "vouchers"), where("code", "==", code), where("active", "==", true));
-        const snap = await getDocs(qSnap);
-        if (snap.empty) {
-          voucherStatus.textContent = "Invalid or inactive voucher.";
-          voucherStatus.style.color = "red";
-          voucher = null;
-          updateCart();
-          return;
-        }
-        const data = snap.docs[0].data();
-        const today = new Date().toISOString().split("T")[0];
-        if (data.expiry && data.expiry < today) {
-          voucherStatus.textContent = "Voucher expired.";
-          voucherStatus.style.color = "red";
-          voucher = null;
-          updateCart();
-          return;
-        }
-        voucher = { code: data.code, type: data.type, value: data.value };
-        voucherStatus.textContent = `Voucher "${data.code}" applied successfully!`;
-        voucherStatus.style.color = "green";
-        updateCart();
-      } catch (err) {
-        voucherStatus.textContent = "Error checking voucher.";
-        voucherStatus.style.color = "red";
-      }
+      timeSelect.appendChild(opt);
     });
 
-    // Flatpickr & time slots
-    flatpickr("#date", {dateFormat:"Y-m-d", minDate:"today", onChange:populateAvailableTimes});
-
-    function generateTimeSlots(){
-      const slots=[]; 
-      let start=new Date(); start.setHours(8,0,0,0);
-      const end=new Date(); end.setHours(20,0,0,0);
-      while(start<=end){
-          slots.push(`${start.getHours().toString().padStart(2,'0')}:${start.getMinutes().toString().padStart(2,'0')}`);
-          start.setHours(start.getHours()+2); // 2-hour gap
-      }
-      return slots;
+    if (generateTimeSlots().every(s => bookedTimes.has(s))) {
+      alert('⚠️ No available slots on this date.');
     }
+  } catch (err) {
+    console.error('populateAvailableTimes error', err);
+    timeSelect.innerHTML = '<option value="">Error loading times</option>';
+  } finally {
+    timeSelect.disabled = false;
+    loadingTimes = false;
+  }
+}
 
-    async function populateAvailableTimes() {
-      const date = dateInput.value;
-      if (!date) return;
-
-      const snapshot = await getDocs(collection(db, 'bookings'));
-      const bookings = snapshot.docs.map(d => d.data()).filter(b => b.date === date);
-
-      const bookedTimes = bookings.map(b => b.time);
-      timeSelect.innerHTML = '<option value="">Select time</option>';
-
-      generateTimeSlots().forEach(slot => {
-        const opt = document.createElement('option');
-        opt.value = slot;
-        if (bookedTimes.includes(slot)) {
-          opt.disabled = true;
-          opt.textContent = `${slot} — Full`;
-          opt.style.color = 'red';
-        } else {
-          opt.textContent = `${slot} — Available`;
-          opt.style.color = 'green';
-        }
-        timeSelect.appendChild(opt);
-      });
-
-      if(generateTimeSlots().every(slot => bookedTimes.includes(slot))) alert('⚠️ No available slots on this date.');
-    }
-
-    // Paystack & invoice logic
+// ---------- Payment (Paystack) & Booking storage ----------
 payBtn.addEventListener('click', async () => {
+  // Basic validations
   const name = document.getElementById('customerName').value.trim();
   const email = document.getElementById('email').value.trim();
   const phone = document.getElementById('phone').value.trim();
@@ -614,140 +575,190 @@ payBtn.addEventListener('click', async () => {
   const address = document.getElementById('address').value.trim();
   const date = dateInput.value;
   const time = timeSelect.value;
-  if(!name || !email || !phone || !mode || !date || !time || cart.length === 0){
-    statusMessage.style.color='red';
-    statusMessage.textContent='Please fill all fields and add at least one service.';
+
+  if (!name || !email || !phone || !mode || !date || !time || cart.length === 0) {
+    setStatus('Please fill all fields and add at least one service.', 'red');
     return;
   }
-  const payRef = `LISASPA-${Date.now()}-${Math.floor(Math.random()*1000000)}`;
 
-  const paystack = new PaystackPop();
+  // Ensure no one booked overlapping slots while user was selecting (double-check)
+  if (loadingTimes) {
+    setStatus('Please wait while time slots finish loading.', 'red');
+    return;
+  }
 
-paystack.newTransaction({
-    key: 'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5',
-    email: email,
-    amount: Number(payBtn.dataset.amount),
-    ref: payRef,
-    currency: 'NGN',
-    onSuccess: async (response) => {
-        try {
-            await addDoc(collection(db,'bookings'),{
-                customerName: name,
-                email,
-                phone,
-                mode,
-                address: mode === 'homeService' ? address : '',
-                services: cart,
-                date,
-                time,
-                status: 'Pending',
-                amount: Number(payBtn.dataset.amount),
-                voucher: voucher ? voucher.code : '',
-                ref: payRef,
-                timestamp: serverTimestamp()
-            });
-
-            // Generate PDF invoice (same as your previous code)
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ unit: 'mm', format: [80, 150] });
-            let lineHeight = 6;
-            let y = 10;
-
-            const img = new Image();
-            img.src = "images/lisa.png";
-            img.onload = () => {
-                const wrapText = (text, maxWidth) => doc.splitTextToSize(text, maxWidth);
-                let baseHeight = 150;
-                let serviceHeight = cart.reduce((acc, s) => {
-                    const lines = wrapText(s.name, 50);
-                    return acc + lines.length * lineHeight;
-                }, 0);
-                let voucherHeight = voucher ? lineHeight : 0;
-                const payRefLines = wrapText(`Payment Ref: ${payRef}`, 60);
-                let paymentRefHeight = payRefLines.length * lineHeight;
-                let addressHeight = 0;
-                if(mode === 'homeService' && address){
-                    const addrLines = wrapText(`Address: ${address}`, 60);
-                    addressHeight = addrLines.length * lineHeight;
-                }
-                let footerHeight = lineHeight * 2;
-                let totalHeight = baseHeight + serviceHeight + voucherHeight + paymentRefHeight + addressHeight + footerHeight;
-
-                doc.internal.pageSize.setWidth(80);
-                doc.internal.pageSize.setHeight(totalHeight);
-
-                // Logo
-                doc.addImage(img, 'PNG', 20, y, 40, 20);
-                y += 25;
-
-                // Header
-                doc.setFontSize(14); doc.setFont(undefined, 'bold');
-                doc.text("Lisa Artistry Spa", 40, y, { align: "center" }); y += lineHeight;
-                doc.setFontSize(10); doc.setFont(undefined, 'normal');
-                doc.text("Booking Invoice", 40, y, { align: "center" }); y += lineHeight*2;
-
-                // Customer Info
-                const info = [`Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`, `Mode: ${mode}`];
-                if(mode === 'homeService' && address){
-                    const addrLines = wrapText(`Address: ${address}`, 60);
-                    addrLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-                }
-                info.push(`Date: ${date}`, `Time: ${time}`);
-                info.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-
-                // Services
-                doc.text("----------------------------------------", 10, y); y += lineHeight;
-                doc.setFont(undefined, 'bold'); doc.text("Service", 10, y); doc.text("Price(₦)", 65, y, { align: "right" }); y += lineHeight;
-                doc.setFont(undefined, 'normal');
-                cart.forEach(s => {
-                    const lines = wrapText(s.name, 50);
-                    const amount = (s.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 });
-                    lines.forEach((line, idx) => {
-                        doc.text(line, 10, y);
-                        if(idx === 0) doc.text(amount, 65, y, { align: "right" });
-                        y += lineHeight;
-                    });
-                });
-
-                doc.text("----------------------------------------", 10, y); y += lineHeight;
-
-                if(voucher){
-                    const voucherLines = wrapText(`Voucher: ${voucher.code}`, 60);
-                    voucherLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-                }
-
-                doc.setFont(undefined,'bold');
-                doc.text("Total Paid:", 10, y);
-                doc.text((payBtn.dataset.amount / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }), 65, y, { align: "right" });
-                y += lineHeight*2;
-
-                doc.setFont(undefined,'normal');
-                payRefLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
-
-                doc.text("Thank you for your booking!", 40, y, { align: "center" });
-
-                doc.save(`Invoice-${payRef}.pdf`);
-
-                statusMessage.style.color='green';
-                statusMessage.textContent='Booking confirmed! Invoice downloaded. Payment reference: '+payRef;
-                cart=[];
-                updateCart();
-                populateAvailableTimes();
-            };
-
-        } catch(err){
-            statusMessage.style.color='red';
-            statusMessage.textContent='Booking failed. Please contact support.';
-        }
-    },
-    onCancel: () => {
-        alert('Payment cancelled');
+  try {
+    // Re-check slot availability: same logic as populateAvailableTimes
+    const snapshot = await getDocs(collection(db, 'bookings'));
+    const docs = snapshot.docs.map(d => d.data()).filter(b => b.date === date);
+    const bookedTimes = new Set();
+    docs.forEach(b => {
+      let startHour = Number(b.time.split(':')[0]);
+      const numSlots = (Array.isArray(b.services) ? b.services.length : 1);
+      for (let i = 0; i < numSlots; i++) {
+        bookedTimes.add(`${startHour.toString().padStart(2, '0')}:00`);
+        startHour += 2;
+      }
+    });
+    if (bookedTimes.has(time)) {
+      setStatus('Selected time is no longer available. Please choose another time.', 'red');
+      populateAvailableTimes();
+      return;
     }
-});
+  } catch (err) {
+    console.warn('Could not re-check slot availability', err);
+    // allow to continue — but safer to re-check; we'll proceed
+  }
+
+  // Compute amount (kobo)
+  const totalKobo = Number(cart.reduce((acc, it) => acc + Number(it.amount), 0));
+  // Apply voucher if present (same logic as updateCart)
+  let payableKobo = totalKobo;
+  if (voucher) {
+    if (voucher.type === 'percent') {
+      const discountKobo = Math.round((voucher.value / 100) * totalKobo);
+      payableKobo = Math.max(0, totalKobo - discountKobo);
+    } else if (voucher.type === 'amount') {
+      const discountKobo = Math.round(Number(voucher.value) * 100);
+      payableKobo = Math.max(0, totalKobo - discountKobo);
+    }
+  }
+
+  if (payableKobo <= 0) {
+    setStatus('Nothing to pay. Adjust cart or voucher.', 'red');
+    return;
+  }
+
+  setStatus('Redirecting to payment...', '#444');
+
+  // Prepare Paystack
+  const payRef = `LISASPA-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+
+  // Use Paystack inline setup
+  const handler = PaystackPop.setup({
+    key: 'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5', // TEST key - replace with live key on production
+    email: email,
+    amount: payableKobo, // in kobo
+    currency: 'NGN',
+    ref: payRef,
+    metadata: {
+      custom_fields: [
+        { display_name: "Customer Name", variable_name: "customer_name", value: name },
+        { display_name: "Phone", variable_name: "phone", value: phone }
+      ]
+    },
+    onClose: function() {
+      setStatus('Payment cancelled.', 'red');
+    },
+    callback: async function(response) {
+      // response.reference is the payment reference
+      try {
+        // Save booking to Firestore
+        const bookingDoc = {
+          customerName: name,
+          email,
+          phone,
+          mode,
+          address: mode === 'homeService' ? address : '',
+          services: cart,
+          date,
+          time,
+          status: 'Paid',
+          amount: payableKobo, // kobo
+          voucher: voucher ? voucher.code : '',
+          ref: response.reference || payRef,
+          timestamp: serverTimestamp()
+        };
+        await addDoc(collection(db, 'bookings'), bookingDoc);
+
+        // Generate PDF invoice
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: [80, 150] });
+        const lineHeight = 6;
+        let y = 10;
+
+        const img = new Image();
+        img.src = "images/lisa.png";
+        img.onload = () => {
+          const wrap = (text, maxW) => doc.splitTextToSize(text, maxW);
+          // Estimate height
+          let serviceLinesCount = 0;
+          cart.forEach(s => serviceLinesCount += wrap(s.name, 50).length);
+          let footerLines = 4;
+          let totalHeight = 60 + (serviceLinesCount * lineHeight) + (footerLines * lineHeight);
+          doc.internal.pageSize.setWidth(80);
+          doc.internal.pageSize.setHeight(Math.max(150, totalHeight));
+
+          // Logo
+          doc.addImage(img, 'PNG', 20, y, 40, 20);
+          y += 25;
+
+          doc.setFontSize(14); doc.setFont(undefined, 'bold');
+          doc.text("Lisa Artistry Spa", 40, y, { align: "center" }); y += lineHeight;
+          doc.setFontSize(10); doc.setFont(undefined, 'normal');
+          doc.text("Booking Invoice", 40, y, { align: "center" }); y += lineHeight * 1.5;
+
+          // Customer info
+          const infoLines = [`Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`, `Mode: ${mode}`];
+          if (mode === 'homeService' && address) {
+            wrap(`Address: ${address}`, 60).forEach(ln => { doc.text(ln, 10, y); y += lineHeight; });
+          }
+          infoLines.push(`Date: ${date}`, `Time: ${time}`);
+          infoLines.forEach(line => { doc.text(line, 10, y); y += lineHeight; });
+
+          doc.text("----------------------------------------", 10, y); y += lineHeight;
+          doc.setFont(undefined, 'bold');
+          doc.text("Service", 10, y);
+          doc.text("Price(₦)", 65, y, { align: "right" }); y += lineHeight;
+          doc.setFont(undefined, 'normal');
+
+          cart.forEach(s => {
+            const lines = wrap(s.name, 50);
+            const amountStr = formatNaira(s.amount);
+            lines.forEach((ln, idx) => {
+              doc.text(ln, 10, y);
+              if (idx === 0) doc.text(amountStr, 65, y, { align: "right" });
+              y += lineHeight;
+            });
+          });
+
+          doc.text("----------------------------------------", 10, y); y += lineHeight;
+
+          if (voucher) {
+            const vtext = voucher.type === 'percent' ? `${voucher.value}% off (${voucher.code})` : `₦${Number(voucher.value).toLocaleString()} off (${voucher.code})`;
+            doc.text(`Voucher: ${vtext}`, 10, y); y += lineHeight;
+          }
+
+          doc.setFont(undefined, 'bold');
+          doc.text("Total Paid:", 10, y);
+          doc.text(formatNaira(payableKobo), 65, y, { align: "right" });
+          y += lineHeight * 2;
+
+          doc.setFont(undefined, 'normal');
+          doc.text(`Payment Ref: ${response.reference || payRef}`, 10, y); y += lineHeight;
+          doc.text("Thank you for your booking!", 40, y, { align: "center" });
+
+          // Save PDF
+          doc.save(`Invoice-${response.reference || payRef}.pdf`);
+        };
+
+        setStatus(`Booking confirmed! Payment ref: ${response.reference || payRef}`, 'green');
+        cart = [];
+        voucher = null;
+        voucherStatus.textContent = '';
+        voucherInput.value = '';
+        updateCart();
+        populateAvailableTimes();
+      } catch (err) {
+        console.error('Error storing booking after payment', err);
+        setStatus('Payment succeeded but saving booking failed. Contact support.', 'red');
+      }
+    }
+  });
 
   handler.openIframe();
 });
+</script>
 
-  </script>
 </body>
 </html>
