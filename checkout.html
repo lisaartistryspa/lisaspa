@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" href="images/lisa.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link href="https://fonts.googleapis.com/css?family=Merienda+One%7cMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -68,6 +69,99 @@ td{border: none;}
 @keyframes pulse {0% {transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);} 70% {transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);} 100% {transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);}}
 .toolTipper{position: fixed; top: 20px; right: 20px; background: #854385; color: white; padding: 10px 15px; border-radius: 8px; font-weight: 400; display: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2);}
 @media(max-width: 992px){.toolTipper{font-size: 13px;}}
+
+#voucherOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+#giftBoxContainer {
+    position: relative;
+    width: 350px;   /* increased size */
+    height: 350px;  /* increased size */
+    z-index: 10000;
+    animation: pop 0.5s ease-out forwards;
+}
+
+#giftBoxBody, #giftBoxLid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#giftBoxLid {
+    transform-origin: top center;
+    transition: transform 0.6s ease-out;
+    transform: rotate(0deg); /* start upright */
+}
+
+@keyframes pop {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.3); }  /* slightly bigger for pop effect */
+    100% { transform: scale(1); }
+}
+
+
+#confettiCanvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+}
+
+.hidden { display: none; }
+
+#voucherText {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FF69B4;
+    text-shadow: 0 0 8px #fff, 0 0 12px #FF69B4;
+    opacity: 0;
+    z-index: 10001;
+    pointer-events: none;
+}
+
+@keyframes bounceIn {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -60%) scale(1.2); opacity: 1; }
+    70% { transform: translate(-50%, -55%) scale(0.9); }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+
+@keyframes bounceIn {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -60%) scale(1.2); opacity: 1; }
+    70% { transform: translate(-50%, -55%) scale(0.9); }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+
+
 </style>
 </head>
 <body>
@@ -81,6 +175,9 @@ td{border: none;}
 </div>
 
 <div id="tooltip" class="toolTipper">Service added to checkout!</div>
+
+
+
 
 <header>
     <nav id="main-nav" class="navbar navbar-default navbar-fixed-top">
@@ -227,6 +324,16 @@ td{border: none;}
         </div>
     </div>
 </footer>
+
+<!-- Fullscreen overlay for voucher success -->
+<div id="voucherOverlay" class="hidden">
+    <div id="giftBoxContainer">
+        <img id="giftBoxBody" src="images/gifter.png" alt="Gift Box" >
+        <img style="visibility: hidden;" id="giftBoxLid" src="images/giftbox-lid.png" alt="Gift Box Lid" >
+    </div>
+    <canvas id="confettiCanvas"></canvas>
+</div>
+
 
 <!-- Scripts -->
 <script src="js/jquery-1.12.4.min.js"></script>
@@ -448,49 +555,99 @@ addServiceBtn.addEventListener('click', () => {
   showTooltip(`"${name}" added to checkout!`);
 });
 
-// ---------- Voucher: checks Firestore vouchers collection ----------
-applyVoucherBtn.addEventListener('click', async () => {
-  const codeRaw = voucherInput.value.trim();
-  if (!codeRaw) {
-    voucherStatus.style.color = 'red';
-    voucherStatus.textContent = 'Please enter a voucher code.';
-    return;
-  }
-  const code = codeRaw.toUpperCase();
-  voucherStatus.textContent = 'Checking voucher...';
-  voucherStatus.style.color = '#444';
 
-  try {
-    const qSnap = query(collection(db, 'vouchers'), where('code', '==', code), where('active', '==', true));
-    const snap = await getDocs(qSnap);
-    if (snap.empty) {
-      voucher = null;
-      voucherStatus.style.color = 'red';
-      voucherStatus.textContent = 'Invalid or inactive voucher.';
-      updateCart();
-      return;
+
+// ---------- Voucher: checks Firestore vouchers collection ----------
+// applyVoucherBtn.addEventListener('click', async () => {
+//   const codeRaw = voucherInput.value.trim();
+//   if (!codeRaw) {
+//     voucherStatus.style.color = 'red';
+//     voucherStatus.textContent = 'Please enter a voucher code.';
+//     return;
+//   }
+//   const code = codeRaw.toUpperCase();
+//   voucherStatus.textContent = 'Checking voucher...';
+//   voucherStatus.style.color = '#444';
+
+//   try {
+//     const qSnap = query(collection(db, 'vouchers'), where('code', '==', code), where('active', '==', true));
+//     const snap = await getDocs(qSnap);
+//     if (snap.empty) {
+//       voucher = null;
+//       voucherStatus.style.color = 'red';
+//       voucherStatus.textContent = 'Invalid or inactive voucher.';
+//       updateCart();
+//       return;
+//     }
+//     const data = snap.docs[0].data();
+//     // expiry check: assume data.expiry in 'YYYY-MM-DD' format or null
+//     const today = new Date().toISOString().split('T')[0];
+//     if (data.expiry && data.expiry < today) {
+//       voucher = null;
+//       voucherStatus.style.color = 'red';
+//       voucherStatus.textContent = 'Voucher expired.';
+//       updateCart();
+//       return;
+//     }
+//     // Acceptable voucher: needs type and value; type can be "percent" or "amount" (amount in Naira)
+//     voucher = { code: data.code, type: data.type, value: data.value };
+//     voucherStatus.style.color = 'green';
+//     voucherStatus.textContent = `Voucher "${data.code}" applied successfully.`;
+//     updateCart();
+
+//   } catch (err) {
+//     console.error('Voucher lookup failed', err);
+//     voucherStatus.style.color = 'red';
+//     voucherStatus.textContent = 'Error checking voucher.';
+//   }
+
+// });
+
+applyVoucherBtn.addEventListener('click', async () => {
+    const codeRaw = voucherInput.value.trim();
+    if (!codeRaw) {
+        voucherStatus.style.color = 'red';
+        voucherStatus.textContent = 'Please enter a voucher code.';
+        return;
     }
-    const data = snap.docs[0].data();
-    // expiry check: assume data.expiry in 'YYYY-MM-DD' format or null
-    const today = new Date().toISOString().split('T')[0];
-    if (data.expiry && data.expiry < today) {
-      voucher = null;
-      voucherStatus.style.color = 'red';
-      voucherStatus.textContent = 'Voucher expired.';
-      updateCart();
-      return;
+    const code = codeRaw.toUpperCase();
+    voucherStatus.textContent = 'Checking voucher...';
+    voucherStatus.style.color = '#444';
+
+    try {
+        const qSnap = query(collection(db, 'vouchers'), where('code', '==', code), where('active', '==', true));
+        const snap = await getDocs(qSnap);
+        if (snap.empty) {
+            voucher = null;
+            voucherStatus.style.color = 'red';
+            voucherStatus.textContent = 'Invalid or inactive voucher.';
+            updateCart();
+            return;
+        }
+        const data = snap.docs[0].data();
+        const today = new Date().toISOString().split('T')[0];
+        if (data.expiry && data.expiry < today) {
+            voucher = null;
+            voucherStatus.style.color = 'red';
+            voucherStatus.textContent = 'Voucher expired.';
+            updateCart();
+            return;
+        }
+        voucher = { code: data.code, type: data.type, value: data.value };
+        voucherStatus.style.color = 'green';
+        voucherStatus.textContent = `Voucher "${data.code}" applied successfully.`;
+        updateCart();
+
+        // Show confetti overlay
+        triggerVoucherOverlay(data.code);
+
+    } catch (err) {
+        console.error('Voucher lookup failed', err);
+        voucherStatus.style.color = 'red';
+        voucherStatus.textContent = 'Error checking voucher.';
     }
-    // Acceptable voucher: needs type and value; type can be "percent" or "amount" (amount in Naira)
-    voucher = { code: data.code, type: data.type, value: data.value };
-    voucherStatus.style.color = 'green';
-    voucherStatus.textContent = `Voucher "${data.code}" applied successfully.`;
-    updateCart();
-  } catch (err) {
-    console.error('Voucher lookup failed', err);
-    voucherStatus.style.color = 'red';
-    voucherStatus.textContent = 'Error checking voucher.';
-  }
 });
+
 
 // ---------- Time slots: generate & mark booked ----------
 flatpickr("#date", { dateFormat: "Y-m-d", minDate: "today", onChange: populateAvailableTimes });
@@ -758,6 +915,113 @@ payBtn.addEventListener('click', async () => {
 
   handler.openIframe();
 });
+
+function showVoucherOverlay(duration = 4000) {
+    const overlay = document.getElementById('voucherOverlay');
+    const lid = document.getElementById('giftBoxLid');
+    const canvas = document.getElementById('confettiCanvas');
+
+    overlay.classList.remove('hidden');
+
+    // Open lid after pop animation
+    setTimeout(() => {
+        lid.style.transform = 'rotateX(-120deg)';
+        startConfetti(canvas, duration); // burst confetti from box
+    }, 500);
+
+    // Auto-hide overlay
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        lid.style.transform = 'rotateX(0deg)'; // reset lid
+    }, duration + 500);
+}
+
+/// Confetti logic
+function startConfetti(canvas, duration = 3000) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiCount = 500;
+    const confetti = [];
+
+    for (let i = 0; i < confettiCount; i++) {
+        confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            d: Math.random() * confettiCount,
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            tilt: Math.random() * 10 - 10,
+            tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+            tiltAngle: 0
+        });
+    }
+
+    let animationFrame;
+    const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach((c) => {
+            ctx.beginPath();
+            ctx.lineWidth = c.r / 2;
+            ctx.strokeStyle = c.color;
+            ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+            ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
+            ctx.stroke();
+        });
+        update();
+    };
+
+    const update = () => {
+        confetti.forEach((c, i) => {
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
+            c.x += Math.sin(c.d);
+            c.tilt = Math.sin(c.tiltAngle - i / 3) * 15;
+
+            if (c.y > canvas.height) {
+                confetti[i] = {
+                    x: Math.random() * canvas.width,
+                    y: -10,
+                    r: c.r,
+                    d: c.d,
+                    color: c.color,
+                    tilt: c.tilt,
+                    tiltAngleIncremental: c.tiltAngleIncremental,
+                    tiltAngle: c.tiltAngle
+                };
+            }
+        });
+    };
+
+    const run = () => {
+        draw();
+        animationFrame = requestAnimationFrame(run);
+    };
+
+    run();
+
+    setTimeout(() => {
+        cancelAnimationFrame(animationFrame);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }, duration);
+}
+
+// Trigger overlay when voucher is applied successfully
+function triggerVoucherOverlay(code) {
+    showVoucherOverlay(3000);
+    // const voucherText = document.getElementById('voucherText');
+    // voucherText.textContent = `Voucher ${code} Applied!`;
+    // voucherText.style.animation = 'bounceIn 0.8s forwards';
+    // setTimeout(() => {
+    //     voucherText.style.animation = 'fadeOut 0.5s forwards';
+    // }, 2500);
+}
+
+// Modify applyVoucherBtn listener to show overlay
+
+
+
 </script>
 
 </body>
