@@ -1,0 +1,122 @@
+/* Chat Widget */
+#wa-chat-widget {
+  position: fixed;
+  bottom: 150px;
+  right: 20px;
+  width: 350px;
+  max-width: 90vw;
+  height: 500px;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  z-index: 9999;
+}
+
+/* Header */
+#wa-header {
+  background: linear-gradient(to right, #FF10F0, #DA70D6, #800080);
+  color: white;
+  padding: 3px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+/* Messages */
+#wa-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual messages */
+.message {
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+.message.user { background: #DCF8C6; align-self: flex-end; }
+.message.bot  { background: #ECECEC; align-self: flex-start; }
+
+/* Typing indicator */
+#wa-typing {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Input container */
+#wa-input-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-top: 1px solid #ccc;
+}
+
+/* Input field */
+#wa-input-container input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #FF00FF;
+  border-radius: 20px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+/* Buttons */
+#wa-input-container button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+#wa-send { background: #25D366; color: white; border-radius: 25px; padding: 0 12px; }
+
+/* Emoji picker */
+#emoji-picker {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Close button hover */
+#wa-close { 
+  font-size: 4rem; 
+  cursor: pointer; 
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  #wa-chat-widget {
+    width: 80vw;
+    height: 60vh;
+    bottom: 150px;
+    right: 5%;
+  }
+  #wa-input-container input[type="text"] { font-size: 0.9rem; }
+  #wa-send { padding: 0 10px; font-size: 1rem; }
+}
