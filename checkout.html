@@ -95,8 +95,8 @@ td{border: none;}
 
 #giftBoxContainer {
     position: relative;
-    width: 350px;   /* increased size */
-    height: 350px;  /* increased size */
+    width: 300px;   /* increased size */
+    height: 300px;  /* increased size */
     z-index: 10000;
     animation: pop 0.5s ease-out forwards;
 }
@@ -132,13 +132,14 @@ td{border: none;}
 .hidden { display: none; }
 
 #voucherText {
-    position: absolute;
-    top: 40%;
-    left: 50%;
+  width:100%;
+    position: fixed;
+    top: 73%;
+    left: 65%;
     transform: translate(-50%, -50%) scale(0);
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
-    color: #FF69B4;
+    color: #DE3163;
     text-shadow: 0 0 8px #fff, 0 0 12px #FF69B4;
     opacity: 0;
     z-index: 10001;
@@ -343,6 +344,7 @@ td{border: none;}
     </div>
     <canvas id="confettiCanvas"></canvas>
 </div>
+<div id="voucherText"></div>
 
 
 <!-- Scripts -->
@@ -566,52 +568,6 @@ addServiceBtn.addEventListener('click', () => {
 });
 
 
-
-// ---------- Voucher: checks Firestore vouchers collection ----------
-// applyVoucherBtn.addEventListener('click', async () => {
-//   const codeRaw = voucherInput.value.trim();
-//   if (!codeRaw) {
-//     voucherStatus.style.color = 'red';
-//     voucherStatus.textContent = 'Please enter a voucher code.';
-//     return;
-//   }
-//   const code = codeRaw.toUpperCase();
-//   voucherStatus.textContent = 'Checking voucher...';
-//   voucherStatus.style.color = '#444';
-
-//   try {
-//     const qSnap = query(collection(db, 'vouchers'), where('code', '==', code), where('active', '==', true));
-//     const snap = await getDocs(qSnap);
-//     if (snap.empty) {
-//       voucher = null;
-//       voucherStatus.style.color = 'red';
-//       voucherStatus.textContent = 'Invalid or inactive voucher.';
-//       updateCart();
-//       return;
-//     }
-//     const data = snap.docs[0].data();
-//     // expiry check: assume data.expiry in 'YYYY-MM-DD' format or null
-//     const today = new Date().toISOString().split('T')[0];
-//     if (data.expiry && data.expiry < today) {
-//       voucher = null;
-//       voucherStatus.style.color = 'red';
-//       voucherStatus.textContent = 'Voucher expired.';
-//       updateCart();
-//       return;
-//     }
-//     // Acceptable voucher: needs type and value; type can be "percent" or "amount" (amount in Naira)
-//     voucher = { code: data.code, type: data.type, value: data.value };
-//     voucherStatus.style.color = 'green';
-//     voucherStatus.textContent = `Voucher "${data.code}" applied successfully.`;
-//     updateCart();
-
-//   } catch (err) {
-//     console.error('Voucher lookup failed', err);
-//     voucherStatus.style.color = 'red';
-//     voucherStatus.textContent = 'Error checking voucher.';
-//   }
-
-// });
 
 applyVoucherBtn.addEventListener('click', async () => {
     const codeRaw = voucherInput.value.trim();
@@ -1020,12 +976,12 @@ function startConfetti(canvas, duration = 3000) {
 // Trigger overlay when voucher is applied successfully
 function triggerVoucherOverlay(code) {
     showVoucherOverlay(3000);
-    // const voucherText = document.getElementById('voucherText');
-    // voucherText.textContent = `Voucher ${code} Applied!`;
-    // voucherText.style.animation = 'bounceIn 0.8s forwards';
-    // setTimeout(() => {
-    //     voucherText.style.animation = 'fadeOut 0.5s forwards';
-    // }, 2500);
+    const voucherText = document.getElementById('voucherText');
+    voucherText.textContent = `Voucher ${code} Applied!`;
+    voucherText.style.animation = 'bounceIn 0.8s forwards';
+    setTimeout(() => {
+        voucherText.style.animation = 'fadeOut 0.5s forwards';
+    }, 3000);
 }
 
 // Modify applyVoucherBtn listener to show overlay
