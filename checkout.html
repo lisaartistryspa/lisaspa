@@ -61,7 +61,17 @@ th {background: #FF69B4; color: white;}
 }
 
 tr{display: flex; justify-content: space-around; align-items: center; background-color: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.06); border-radius: 16px !important; margin-top:10px !important;}
+@media(max-width: 992px){
+  tr{
+    font-size:13px;
+  }
+}
 td{border: none;}
+@media(max-width: 992px){
+  td{
+    font-size:13px !important;
+  }
+}
 .speci{background-color: #fff !important; color: #121212 !important; display: inline-block; margin-top:5px; border-radius: 5px;}
 .speci a{padding: 10px 15px !important; color:#121212 !important;}
 .speci a:hover{border-radius: 5px; background-color: #e6a3c4 !important; color: #fff !important;}
@@ -793,7 +803,7 @@ payBtn.addEventListener('click', async () => {
 
   // Use Paystack inline setup
   const handler = PaystackPop.setup({
-    key: 'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5', // TEST key - replace with live key on production
+    key: 'pk_test_f5ff12d7dcf3c4e775217995b6860da981998ee5', 
     email: email,
     amount: payableKobo, // in kobo
     currency: 'NGN',
